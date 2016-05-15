@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Редактор изображений</title>
+    <style type="text/css">
+        #menuContainer {
+            position: relative;
+            background: #2a9aeb;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+        #imageViewBackground {
+            position: absolute;
+            z-index: 1;
+        }
+        #imageViewFrontground {
+            position: absolute;
+            z-index: 2;
+        }
+        #imageTemp {
+            position: absolute;
+            z-index: 3;
+        }
+        #viewDiv {
+            position: absolute;
+            width: 100%;
+        }
+        #colorPicker,
+        #fillColorPicker {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            width: 70px;
+            height: 20px;
+            border-right: 20px solid #000000;
+            line-height: 20px;
+        }
+    </style>
+
+    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="js/mootools-core-1.4.5-nocompat.js"></script>
+    <script type="text/javascript" src="js/paint.js"></script>
+    <script type="text/javascript" src="js/colpick.js"></script>
+    <link rel="stylesheet" href="css/colpick.css" type="text/css" />
+
+    <script>
+        $(document).ready(function() {
+            $('#colorPicker').colpick({
+                //colorScheme:'dark',
+                //color: 'ff8800',
+                layout: 'rgbhex',
+                onSubmit: function(hsb, hex, rgb, el) {
+                    $(el).css('border-color', '#' + hex);
+                    $(el).colpickHide();
+                }
+            }).keyup(function() {
+                $(this).colpickSetColor(this.value);
+            });
+            $('#fillColorPicker').colpick({
+                //colorScheme:'dark',
+                //color: 'ff8800',
+                layout: 'rgbhex',
+                onSubmit: function(hsb, hex, rgb, el) {
+                    $(el).css('border-color', '#' + hex);
+                    $(el).colpickHide();
+                }
+            }).keyup(function() {
+                $(this).colpickSetColor(this.value);
+            });
+        });
+    </script>
+
+</head>
+
+<body style="margin: 0px;">
+    <div id="menuContainer">
+        <br>
+        <label> Инструмент:
+            <select id="dtool">
+                <option value="pencil">Карандаш</option>
+                <option value="eraser">Ластик</option>
+                <option value="line">Линия</option>
+                <option value="rect">Прямоугольник</option>
+                <option value="fillrect">Прямоугольник с заливкой</option>
+                <option value="text">Текст</option>
+            </select>
+        </label>
+        <label>Толщина:
+            <input id="radius" type="number" value="5" style="width:35px;">
+        </label>
+        <label>Шрифт:
+            <input id="textSize" type="number" value="12" style="width:35px;">
+        </label>
+        Цвет:
+        <input type="text" id="colorPicker" style="width:0px;"></input>
+        Заливка:
+        <input type="text" id="fillColorPicker" style="width:0px;"></input>
+        <input type="button" id="cancelButton" value="Отменить действие"></input>
+        <input type="file" id="openButton"></input>
+        <input type="button" value="Сохранить" id = "saveButton"></input>
+        <br>
+    </div>
+    <div id="viewDiv">
+        <canvas id="imageViewBackground"></canvas>
+        <canvas id="imageViewFrontground"></canvas>
+    </div>
+</body>
+
+</html>
